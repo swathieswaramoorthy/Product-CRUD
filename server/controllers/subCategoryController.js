@@ -1,5 +1,5 @@
 const SubCategory = require("../models/subCategory");
-
+const Product = require("../models/Product");
 // CREATE
 const createSubCategory = async (req, res) => {
     try {
@@ -13,8 +13,10 @@ const createSubCategory = async (req, res) => {
 // READ ALL
 const getSubCategories = async (req, res) => {
     try {
-        const subCategories = await SubCategory.find().populate("category");
-        res.json(subCategories);
+const subCategories = await SubCategory.find()
+.populate("category")
+.sort({ createdAt: -1 });        
+res.json(subCategories);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -34,16 +36,35 @@ const updateSubCategory = async (req, res) => {
     }
 };
 
-// DELETE
 const deleteSubCategory = async (req, res) => {
-    try {
-        await SubCategory.findByIdAndDelete(req.params.id);
-        res.json({ message: "SubCategory deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
 
+    try {
+
+        const subCategoryId = req.params.id;
+
+        // Delete products under this subcategory
+        await Product.deleteMany({
+            subCategory: subCategoryId
+        });
+
+        // Delete subcategory
+        await SubCategory.findByIdAndDelete(subCategoryId);
+
+        res.json({
+            success: true,
+            message: "SubCategory and related Products deleted successfully"
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+
+    }
+
+};
 module.exports = {
     createSubCategory,
     getSubCategories,

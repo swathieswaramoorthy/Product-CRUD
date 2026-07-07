@@ -5,10 +5,11 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 
 // Routes
+const authRoutes = require("./routes/authRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subCategoryRoutes = require("./routes/subCategoryRoutes");
 const productRoutes = require("./routes/productRoutes");
-
 const app = express();
 
 // Connect Database
@@ -25,6 +26,8 @@ app.use(
 app.use(express.json());
 
 // API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/subcategories", subCategoryRoutes);
 app.use("/api/products", productRoutes);

@@ -1,0 +1,103 @@
+.page-title{
+    font-size:30px;
+    font-weight:700;
+    color:#1e293b;
+    margin-bottom:25px;
+}
+
+.subcategory-container{
+    display:grid;
+    grid-template-columns:360px 1fr;
+    gap:25px;
+}
+
+.sub-card{
+    background:#fff;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.sub-card h4{
+    margin-bottom:20px;
+    font-weight:600;
+}
+
+.form-control,
+.form-select{
+    height:48px;
+    border-radius:12px !important;
+}
+
+.save-btn{
+    width:100%;
+    border:none;
+    padding:12px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    font-weight:600;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    transform:translateY(-2px);
+}
+
+.table-card{
+    background:#fff;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.search-box{
+    width:300px;
+    margin-bottom:20px;
+}
+
+.table th{
+    background:#2563eb;
+    color:white;
+}
+
+.table tbody tr:hover{
+    background:#f8fafc;
+}
+
+.badge-category{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.action-btn{
+    border:none;
+    border-radius:8px;
+    padding:8px 12px;
+    margin-right:8px;
+}
+
+.edit-btn{
+    background:#facc15;
+}
+
+.delete-btn{
+    background:#ef4444;
+    color:white;
+}
+
+@media(max-width:900px){
+
+.subcategory-container{
+grid-template-columns:1fr;
+}
+
+.search-box{
+width:100%;
+}
+
+}
