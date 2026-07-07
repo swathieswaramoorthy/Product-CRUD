@@ -78,9 +78,12 @@
 //     );
 
 // }
+import { useEffect, useState } from "react";
+import API from "../services/api";
 import DashboardLayout from "../components/DashboardLayout";
-import "../css/adminDashboard.css";
+
 import { motion } from "framer-motion";
+
 import {
     FaBoxes,
     FaLayerGroup,
@@ -92,35 +95,63 @@ import "../css/adminDashboard.css";
 
 export default function AdminDashboard() {
 
+    const [dashboard, setDashboard] = useState({
+
+        productCount: 0,
+        categoryCount: 0,
+        subCategoryCount: 0,
+        recentProducts: []
+
+    });
+
+    const fetchDashboard = async () => {
+
+        try {
+
+            const res = await API.get("/dashboard");
+
+            setDashboard(res.data);
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
+
+    useEffect(() => {
+
+        fetchDashboard();
+
+    }, []);
+
     const cards = [
 
         {
             title: "Products",
-            value: "128",
+            value: dashboard.productCount,
             icon: <FaBoxes />,
             color: "#2563EB"
         },
 
         {
             title: "Categories",
-            value: "12",
+            value: dashboard.categoryCount,
             icon: <FaLayerGroup />,
             color: "#10B981"
         },
 
         {
             title: "Sub Categories",
-            value: "36",
+            value: dashboard.subCategoryCount,
             icon: <FaTags />,
             color: "#F59E0B"
         },
 
-        {
-            title: "Customers",
-            value: "86",
-            icon: <FaUsers />,
-            color: "#EF4444"
-        }
+    
 
     ];
 
@@ -130,31 +161,24 @@ export default function AdminDashboard() {
 
             <motion.div
 
-                initial={{ opacity: 0, y: -40 }}
+                initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
+
+                className="dashboard-header"
 
             >
 
-                <div className="welcome-card">
+                <h1>
 
-                    <div>
+                    Dashboard
 
-                        <h1>
+                </h1>
 
-                            Welcome Back 👋
+                <p>
 
-                        </h1>
+                    Manage your entire shop from one place.
 
-                        <p>
-
-                            Manage your products, categories and customers
-                            efficiently.
-
-                        </p>
-
-                    </div>
-
-                </div>
+                </p>
 
             </motion.div>
 
@@ -168,9 +192,11 @@ export default function AdminDashboard() {
 
                             key={index}
 
+                            className="stat-card"
+
                             initial={{
                                 opacity: 0,
-                                y: 40
+                                y: 30
                             }}
 
                             animate={{
@@ -179,20 +205,18 @@ export default function AdminDashboard() {
                             }}
 
                             transition={{
-                                delay: index * .2
+                                delay: index * 0.15
                             }}
-
-                            className="stat-card"
 
                         >
 
                             <div>
 
-                                <h4>
+                                <h5>
 
                                     {card.title}
 
-                                </h4>
+                                </h5>
 
                                 <h2>
 
@@ -226,18 +250,20 @@ export default function AdminDashboard() {
 
             <motion.div
 
+                className="recent-products"
+
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
 
-                transition={{ delay: .8 }}
-
-                className="recent-card"
+                transition={{
+                    delay: .6
+                }}
 
             >
 
                 <h3>
 
-                    Recent Products
+                    Recently Added Products
 
                 </h3>
 
@@ -258,41 +284,58 @@ export default function AdminDashboard() {
 
                     <tbody>
 
-                        <tr>
+                        {
 
-                            <td>Notebook</td>
+                            dashboard.recentProducts.length > 0 ?
 
-                            <td>Stationery</td>
+                                dashboard.recentProducts.map(product => (
 
-                            <td>Classmate</td>
+                                    <tr key={product._id}>
 
-                            <td>₹120</td>
+                                        <td>
 
-                        </tr>
+                                            {product.productName}
 
-                        <tr>
+                                        </td>
 
-                            <td>Knife Set</td>
+                                        <td>
 
-                            <td>Kitchen</td>
+                                            {product.category?.categoryName}
 
-                            <td>Pigeon</td>
+                                        </td>
 
-                            <td>₹699</td>
+                                        <td>
 
-                        </tr>
+                                            {product.brand}
 
-                        <tr>
+                                        </td>
 
-                            <td>Flower Pot</td>
+                                        <td>
 
-                            <td>Decor</td>
+                                            ₹{product.price}
 
-                            <td>Home Centre</td>
+                                        </td>
 
-                            <td>₹999</td>
+                                    </tr>
 
-                        </tr>
+                                ))
+
+                                :
+
+                                <tr>
+
+                                    <td
+                                        colSpan="4"
+                                        className="empty-row"
+                                    >
+
+                                        No Products Available
+
+                                    </td>
+
+                                </tr>
+
+                        }
 
                     </tbody>
 

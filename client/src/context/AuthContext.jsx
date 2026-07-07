@@ -1,17 +1,48 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { createContext, useContext, useEffect, useState } from "react";
 
-export default function PrivateRoute({ children }) {
+const AuthContext = createContext();
 
-    const { user, loading } = useAuth();
+export const AuthProvider = ({ children }) => {
 
-    if (loading) {
-        return <h3 style={{ textAlign: "center", marginTop: "100px" }}>Loading...</h3>;
-    }
+    const [user, setUser] = useState(null);
 
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
+    useEffect(() => {
+        const savedUser = localStorage.getItem("user");
 
-    return children;
-}
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
+    }, []);
+
+    const login = (user, token) => {
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", token);
+
+        setUser(user);
+    };
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+
+        setUser(null);
+
+        window.location.href = "/";
+    };
+
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                login,
+                logout
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};

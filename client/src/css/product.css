@@ -60,9 +60,7 @@
     padding:25px;
     border-radius:18px;
     box-shadow:0 10px 30px rgba(0,0,0,.08);
-    min-height:650px;
 }
-
 .search-section{
     display:flex;
     gap:15px;
@@ -220,3 +218,11 @@ flex-direction:column;
 .table tbody tr:hover{
     background:#f8fafc;
 }
+/* .table-responsive{
+    overflow-x:auto;
+    width:100%;
+}
+
+.table{
+    min-width:900px;
+} */
