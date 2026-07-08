@@ -43,9 +43,9 @@ function Welcome() {
 
               <h1 className="hero-title">
 
-                Welcome to
+                Welcome to A-Z Shop
 
-                <span> A-Z Shop</span>
+              
 
               </h1>
 
