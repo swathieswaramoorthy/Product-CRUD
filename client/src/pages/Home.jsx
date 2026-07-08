@@ -508,11 +508,7 @@ return (
 
                 </div>
 
-                <button>
-
-                    View Product
-
-                </button>
+    
 
             </div>
 
